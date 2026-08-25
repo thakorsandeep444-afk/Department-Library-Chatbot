@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Resource Portal | Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        .upload-card { max-width: 650px; margin: 80px auto 40px; padding: 35px; }
+        .access-denied { max-width: 500px; margin: 120px auto; text-align: center; display: none; }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <header></header>
+
+    <div class="container flex-grow-1">
+        <!-- Access Denied View for Non-Faculty -->
+        <div id="denied-view" class="card glass-card p-5 access-denied">
+            <span class="material-icons text-danger mb-3" style="font-size: 64px;">gpp_bad</span>
+            <h3 class="fw-800">Faculty Access Only</h3>
+            <p class="text-muted fs-14">You are currently logged in with student permissions. Only faculty members can upload books and question papers.</p>
+            <a href="index.html" class="btn btn-primary-custom mt-2">Return to Dashboard</a>
+        </div>
+
+        <!-- Faculty Upload Interface -->
+        <div id="faculty-upload-container" class="upload-card glass-card my-5" style="display: none;">
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="material-icons text-primary" style="font-size: 32px;">upload_file</span>
+                <h3 class="fw-800 mb-0">Upload Academic Material</h3>
+            </div>
+            <p class="text-muted fs-14 mb-4">Publish books, previous question papers, or e-books to the library repository.</p>
+
+            <form id="upload-resource-form" enctype="multipart/form-data" novalidate>
+                <div class="mb-3">
+                    <label for="resource-title" class="form-label fw-600 fs-14">Resource Title</label>
+                    <input type="text" id="resource-title" class="form-control form-control-custom" placeholder="e.g. Data Structures & Algorithms Question Paper 2025" required>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="resource-category" class="form-label fw-600 fs-14">Category</label>
+                        <select id="resource-category" class="form-select form-control-custom" required>
+                            <option value="paper">Question Paper</option>
+                            <option value="book">Reference Book</option>
+                            <option value="ebook">E-Book</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="resource-subject" class="form-label fw-600 fs-14">Subject / Course Code</label>
+                        <input type="text" id="resource-subject" class="form-control form-control-custom" placeholder="e.g. CS201" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="resource-file" class="form-label fw-600 fs-14">Document File (PDF, EPUB, DOCX)</label>
+                    <input type="file" id="resource-file" class="form-control form-control-custom" accept=".pdf,.epub,.docx,.doc" required>
+                    <div class="form-text fs-12">Maximum allowed file size is 25MB.</div>
+                </div>
+
+                <button type="submit" id="upload-submit-btn" class="btn btn-primary-custom w-100 py-2 fw-700">
+                    <span class="d-flex align-items-center justify-content-center gap-2">
+                        <span class="material-icons" style="font-size: 20px;">cloud_upload</span> Upload Resource
+                    </span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { getCurrentUser } from "./js/auth.js";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = getCurrentUser();
+
+            // Guard check: Must be logged in and role must be 'faculty'
+            if (!user || user.role !== "faculty") {
+                document.getElementById("denied-view").style.display = "block";
+                return;
+            }
+
+            document.getElementById("faculty-upload-container").style.display = "block";
+
+            const uploadForm = document.getElementById("upload-resource-form");
+            uploadForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const title = document.getElementById("resource-title").value.trim();
+                const category = document.getElementById("resource-category").value;
+                const subject = document.getElementById("resource-subject").value.trim();
+                const fileInput = document.getElementById("resource-file");
+
+                if (!title || !subject || fileInput.files.length === 0) {
+                    if (window.showToast) window.showToast("Missing Fields", "Please complete all fields and attach a file.", "warning");
+                    return;
+                }
+
+                const submitBtn = document.getElementById("upload-submit-btn");
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = "Uploading...";
+
+                const formData = new FormData();
+                formData.append("title", title);
+                formData.append("category", category);
+                formData.append("subject", subject);
+                formData.append("resource_file", fileInput.files[0]);
+                formData.append("user_role", user.role);
+                formData.append("uploaded_by", user.email);
+
+                try {
+                    const response = await fetch("backend/api/upload_resource.php", {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        if (window.showToast) window.showToast("Upload Complete", result.message, "success");
+                        uploadForm.reset();
+                    } else {
+                        if (window.showToast) window.showToast("Upload Error", result.message, "error");
+                    }
+                } catch (error) {
+                    if (window.showToast) window.showToast("Server Error", "An error occurred during upload.", "error");
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<span class="d-flex align-items-center justify-content-center gap-2"><span class="material-icons" style="font-size: 20px;">cloud_upload</span> Upload Resource</span>`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
