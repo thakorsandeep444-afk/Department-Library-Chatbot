@@ -1,5 +1,30 @@
 <?php
-session_start();
+
+<?php
+// Dynamically allow requesting origin to enable credentials/cookies
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
+header("Access-Control-Allow-Origin: $origin");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+// Allow PHP session cookies to work cross-site (GitHub Pages -> PHP Server)
+if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path'     => '/',
+        'domain'   => '',
+        'secure'   => true,      // Must be HTTPS on live server
+        'httponly' => true,
+        'samesite' => 'None'     // Allows cross-origin session cookies
+    ]);
+    session_start();
+}
 
 header("Content-Type: application/json");
 

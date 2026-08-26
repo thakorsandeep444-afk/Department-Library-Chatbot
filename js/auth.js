@@ -39,8 +39,9 @@ export async function sendOTP(email) {
     const formData = new FormData();
     formData.append("email", email);
 
-    const res = await fetch("backend/api/send_otp.php", {
+    const res = await fetch(`${API_BASE_URL}send_otp.php`, {
         method: "POST",
+        credentials: "include", // Enables cross-site session cookie support
         body: formData
     });
 
@@ -57,8 +58,9 @@ export async function verifyOTP(email, otp) {
     formData.append("email", email);
     formData.append("otp", otp);
 
-    const res = await fetch("backend/api/verify_otp.php", {
+    const res = await fetch(`${API_BASE_URL}verify_otp.php`, {
         method: "POST",
+        credentials: "include", // Sends session cookie stored during sendOTP
         body: formData
     });
 
