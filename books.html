@@ -1,363 +1,189 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Browse and search all books in the Department Library catalog.">
-    <title>Book Catalog | Library Portal</title>
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- AOS Animate On Scroll -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Custom Style -->
-    <link href="css/style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Professional Engineering Department Library book catalog.">
+<title>Engineering Book Catalog | Department Library</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<style>
+:root{--p:#2563eb;--s:#7c3aed;--bg:#f5f7fb;--text:#172033;--muted:#64748b;--border:#e2e8f0}
+body{background:radial-gradient(circle at top left,rgba(37,99,235,.07),transparent 30%),var(--bg);color:var(--text)}
+#loading-screen{position:fixed;inset:0;z-index:99999;background:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:.4s}
+#loading-screen.hide{opacity:0;visibility:hidden}.spinner-custom{width:52px;height:52px;border:5px solid #e5e7eb;border-top-color:var(--p);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.logo-loading{margin-top:20px;font-size:20px;font-weight:800;letter-spacing:1px}
+.catalog-hero{position:relative;overflow:hidden;margin-top:20px;padding:42px;border-radius:28px;color:#fff;background:linear-gradient(135deg,#1d4ed8,#2563eb 45%,#7c3aed);box-shadow:0 20px 60px rgba(37,99,235,.2)}
+.catalog-hero:before,.catalog-hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}.catalog-hero:before{width:320px;height:320px;top:-130px;right:-80px}.catalog-hero:after{width:220px;height:220px;bottom:-100px;left:40%}.hero-content{position:relative;z-index:2}.hero-title{font-size:clamp(28px,4vw,46px);font-weight:800}.hero-subtitle{opacity:.9;max-width:720px;font-size:15px}.hero-stat{margin-top:25px;display:flex;flex-wrap:wrap;gap:12px}.hero-stat-box{min-width:145px;padding:13px 17px;border:1px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.1);backdrop-filter:blur(10px)}.hero-stat-number{font-size:22px;font-weight:800}.hero-stat-label{font-size:11px;opacity:.8}
+.advanced-search{margin-top:-28px;position:relative;z-index:10;background:#fff;border:1px solid var(--border);border-radius:20px;padding:18px;box-shadow:0 15px 45px rgba(15,23,42,.1)}.main-search-wrapper{position:relative}.search-icon{position:absolute;left:17px;top:50%;transform:translateY(-50%);color:#64748b;z-index:3}#search-bar{padding-left:48px;height:52px;border-radius:13px;border:1px solid var(--border);font-size:14px}.search-shortcut{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;border:1px solid #e2e8f0;border-radius:6px;color:#94a3b8;font-size:11px}
+.filter-card,.result-toolbar{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 30px rgba(15,23,42,.05)}.filter-card{padding:22px}.filter-title{font-weight:800;font-size:16px}.filter-section{padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid #eef2f7}.filter-label{font-size:12px;font-weight:700;color:#475569;margin-bottom:7px}.custom-select{border-radius:10px!important;min-height:42px;font-size:13px!important;border:1px solid #dbe3ee!important}.category-chips{display:flex;flex-wrap:wrap;gap:7px}.category-chip{border:1px solid #dbe3ee;background:#fff;color:#475569;border-radius:50px;padding:7px 12px;font-size:11px;font-weight:700;cursor:pointer}.category-chip:hover,.category-chip.active{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}
+.result-toolbar{padding:13px 16px;margin-bottom:18px}.result-count{font-size:13px;color:#64748b}.result-count strong{color:#0f172a;font-size:17px}.sort-select{border:1px solid #dbe3ee;border-radius:9px;padding:8px 30px 8px 10px;font-size:12px;color:#475569}
+.book-card{height:100%;overflow:hidden;background:#fff;border:1px solid var(--border);border-radius:18px;transition:.25s}.book-card:hover{transform:translateY(-5px);border-color:#bfdbfe;box-shadow:0 18px 40px rgba(15,23,42,.1)}.book-cover{height:145px;margin:12px;border-radius:13px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,#eff6ff,#dbeafe)}.book-cover-icon{font-size:64px;color:#2563eb;opacity:.85}.cover-code{position:absolute;left:10px;bottom:9px;background:rgba(255,255,255,.9);color:#1e3a8a;padding:4px 8px;border-radius:6px;font-size:9px;font-weight:800}.book-type{position:absolute;top:10px;right:10px;font-size:9px;font-weight:800;padding:5px 8px;border-radius:50px;background:#fff;color:#334155;box-shadow:0 3px 10px rgba(0,0,0,.08)}.wishlist-btn{position:absolute;top:10px;left:10px;width:31px;height:31px;border:0;border-radius:50%;background:rgba(255,255,255,.95);color:#64748b;z-index:3}.wishlist-btn.active,.wishlist-btn:hover{color:#ef4444}.book-content{padding:17px}.book-dept{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:6px;font-size:9px;font-weight:800;margin-bottom:10px}.book-title{font-size:16px;font-weight:800;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:43px}.book-author{font-size:11px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.book-meta{margin-top:13px;display:grid;grid-template-columns:1fr 1fr;gap:7px}.book-meta-item{background:#f8fafc;border-radius:8px;padding:8px}.book-meta-label{font-size:8px;text-transform:uppercase;letter-spacing:.4px;color:#94a3b8;font-weight:800}.book-meta-value{font-size:10px;font-weight:700;color:#334155}.book-footer{margin-top:14px;padding-top:12px;border-top:1px solid #eef2f7;display:flex;justify-content:space-between;align-items:center}.availability{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700}.availability-dot{width:7px;height:7px;border-radius:50%}.available{color:#15803d}.available .availability-dot{background:#22c55e}.unavailable{color:#dc2626}.unavailable .availability-dot{background:#ef4444}.details-btn{border:0;background:#eff6ff;color:#2563eb;border-radius:8px;padding:8px 11px;font-size:10px;font-weight:800}.details-btn:hover{background:#2563eb;color:#fff}
+.empty-state{background:#fff;border:1px dashed #cbd5e1;border-radius:20px;padding:70px 25px;text-align:center}.empty-state .material-icons{font-size:70px;color:#cbd5e1}.empty-state h4{font-weight:800}.book-modal .modal-content{border:0;border-radius:22px;overflow:hidden}.book-modal .modal-header{background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;border:0}.modal-book-cover{min-height:230px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#eff6ff,#ede9fe)}.modal-book-cover .material-icons{font-size:100px;color:#2563eb}.modal-book-title{font-size:23px;font-weight:800}.detail-row{display:flex;justify-content:space-between;gap:15px;padding:9px 0;border-bottom:1px solid #eef2f7;font-size:12px}.detail-label{color:#64748b;font-weight:600}.detail-value{text-align:right;color:#1e293b;font-weight:700}.rating-stars{color:#f59e0b;letter-spacing:2px}.pagination-wrapper{display:flex;justify-content:center;margin-top:28px}.page-btn{width:36px;height:36px;margin:0 3px;border:1px solid #dbe3ee;border-radius:9px;background:#fff;color:#475569;font-size:12px;font-weight:700}.page-btn:hover,.page-btn.active{background:#2563eb;border-color:#2563eb;color:#fff}@media(max-width:991px){.catalog-hero{padding:30px 22px}.advanced-search{margin-top:15px}.filter-card{position:static!important}}@media(max-width:575px){.hero-stat-box{flex:1;min-width:120px}.result-toolbar{align-items:flex-start!important;gap:10px;flex-direction:column}.book-cover{height:170px}}
+</style>
 </head>
 <body class="d-flex flex-column min-vh-100">
+<div id="loading-screen"><div class="spinner-custom"></div><div class="logo-loading">DEPARTMENT LIBRARY</div><p class="text-muted mt-2">Loading Engineering Book Catalog...</p></div>
+<header></header>
 
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="spinner-custom"></div>
-        <div class="logo-loading">DEPT LIBRARY</div>
-        <p class="text-muted mt-2 fs-14">Opening book catalog...</p>
-    </div>
+<main class="container my-4 pt-4 flex-grow-1">
+<section class="catalog-hero" data-aos="fade-up">
+<div class="hero-content">
+<div class="d-flex align-items-center gap-2 mb-3"><span class="badge bg-light text-primary px-3 py-2"><i class="fa-solid fa-graduation-cap me-1"></i>Engineering Library</span><span class="badge bg-white bg-opacity-10 text-white px-3 py-2">Digital Catalog</span></div>
+<h1 class="hero-title">Engineering Book Catalog</h1>
+<p class="hero-subtitle">Search textbooks, reference books, lab manuals and academic resources across all engineering departments and semesters.</p>
+<div class="hero-stat">
+<div class="hero-stat-box"><div class="hero-stat-number" id="hero-total-books">0</div><div class="hero-stat-label">TOTAL COPIES</div></div>
+<div class="hero-stat-box"><div class="hero-stat-number" id="hero-available-books">0</div><div class="hero-stat-label">AVAILABLE</div></div>
+<div class="hero-stat-box"><div class="hero-stat-number" id="hero-departments">5</div><div class="hero-stat-label">DEPARTMENTS</div></div>
+<div class="hero-stat-box"><div class="hero-stat-number" id="hero-semesters">6</div><div class="hero-stat-label">SEMESTERS</div></div>
+</div></div></section>
 
-    <!-- Global Header -->
-    <header></header>
+<section class="advanced-search" data-aos="fade-up">
+<div class="main-search-wrapper"><span class="material-icons search-icon">search</span><input type="search" id="search-bar" class="form-control" autocomplete="off" placeholder="Search by title, author, subject, ISBN, publisher..."><span class="search-shortcut d-none d-md-block">Ctrl + K</span></div>
+</section>
 
-    <!-- Main Body -->
-    <main class="container my-5 pt-5 flex-grow-1">
-        <!-- Breadcrumbs Placeholder -->
-        <div id="breadcrumbs-container"></div>
+<div class="row g-4 mt-3">
+<div class="col-lg-3" data-aos="fade-right">
+<aside class="filter-card sticky-top" style="top:95px">
+<div class="filter-title mb-4"><span class="material-icons text-primary">tune</span> Advanced Filters</div>
+<div class="filter-section"><label class="filter-label">Engineering Department</label><select id="filter-dept" class="form-select custom-select"><option value="">All Departments</option><option value="CO">Computer Engineering</option><option value="IF">Information Technology</option><option value="EE">Electrical Engineering</option><option value="ME">Mechanical Engineering</option><option value="CE">Civil Engineering</option></select></div>
+<div class="filter-section"><label class="filter-label">Semester</label><select id="filter-sem" class="form-select custom-select"><option value="">All Semesters</option><option value="1">Semester 1</option><option value="2">Semester 2</option><option value="3">Semester 3</option><option value="4">Semester 4</option><option value="5">Semester 5</option><option value="6">Semester 6</option></select></div>
+<div class="filter-section"><label class="filter-label">Book Type</label><div class="category-chips"><button class="category-chip active" data-type="">All</button><button class="category-chip" data-type="Textbook">Textbook</button><button class="category-chip" data-type="Reference">Reference</button><button class="category-chip" data-type="Lab Manual">Lab Manual</button><button class="category-chip" data-type="Competitive">Competitive</button></div></div>
+<div class="filter-section"><label class="filter-label">Publication Year</label><select id="filter-year" class="form-select custom-select"><option value="">Any Year</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option></select></div>
+<div class="filter-section"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="filter-avail"><label class="form-check-label" for="filter-avail"><strong>Available Books Only</strong></label></div></div>
+<button id="reset-filters-btn" class="btn btn-outline-primary w-100"><i class="fa-solid fa-rotate-left me-1"></i>Reset All Filters</button>
+</aside>
+</div>
 
-        <div class="row g-4 mt-3">
-            <!-- Filter Sidebar -->
-            <div class="col-lg-3" data-aos="fade-right">
-                <div class="glass-card p-4 sticky-top" style="top: 100px;">
-                    <h5 class="fw-800 mb-3 d-flex align-items-center gap-2 text-primary">
-                        <span class="material-icons">filter_alt</span> Filter Catalog
-                    </h5>
-                    
-                    <!-- Search Input Inside Sidebar -->
-                    <div class="mb-3">
-                        <label class="form-label fw-600 fs-13">Search Query</label>
-                        <input type="text" id="search-bar" class="form-control form-control-custom" placeholder="Title, author, ISBN...">
-                    </div>
+<div class="col-lg-9" data-aos="fade-left">
+<div class="result-toolbar d-flex justify-content-between align-items-center">
+<div class="result-count">Showing <strong id="results-count">0</strong> books from Department Library</div>
+<div class="d-flex align-items-center gap-2"><label class="small text-muted d-none d-sm-block">Sort:</label><select id="sort-books" class="sort-select"><option value="relevance">Relevance</option><option value="title-asc">Title A-Z</option><option value="title-desc">Title Z-A</option><option value="year-desc">Newest First</option><option value="year-asc">Oldest First</option><option value="rating-desc">Highest Rated</option><option value="available-desc">Most Available</option></select></div>
+</div>
+<div class="row g-4" id="books-grid-container"></div>
+<div id="pagination-container" class="pagination-wrapper"></div>
+</div>
+</div>
+</main>
 
-                    <!-- Department Filter -->
-                    <div class="mb-3">
-                        <label class="form-label fw-600 fs-13">Engineering Department</label>
-                        <select id="filter-dept" class="form-select form-control-custom">
-                            <option value="">All Departments</option>
-                            <option value="CO">Computer Eng.</option>
-                            <option value="IF">Information Tech.</option>
-                            <option value="EE">Electrical Eng.</option>
-                            <option value="ME">Mechanical Eng.</option>
-                            <option value="CE">Civil Eng.</option>
-                        </select>
-                    </div>
+<div class="modal fade book-modal" id="bookDetailsModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"><div class="modal-content">
+<div class="modal-header"><h5 class="modal-title fw-bold"><i class="fa-solid fa-book-open me-2"></i>Book Information</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+<div class="modal-body" id="book-modal-details-body"></div>
+<div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button><button type="button" class="btn btn-primary" id="modal-reserve-btn"><i class="fa-solid fa-bookmark me-1"></i> Reserve Book</button></div>
+</div></div></div>
 
-                    <!-- Semester Filter -->
-                    <div class="mb-3">
-                        <label class="form-label fw-600 fs-13">Course Semester</label>
-                        <select id="filter-sem" class="form-select form-control-custom">
-                            <option value="">All Semesters</option>
-                            <option value="1">Semester 1</option>
-                            <option value="2">Semester 2</option>
-                            <option value="3">Semester 3</option>
-                            <option value="4">Semester 4</option>
-                            <option value="5">Semester 5</option>
-                            <option value="6">Semester 6</option>
-                        </select>
-                    </div>
+<footer></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script type="module" src="js/app.js"></script>
 
-                    <!-- Available Switch -->
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" id="filter-avail">
-                        <label class="form-check-label fw-600 fs-13 text-color" for="filter-avail">Show Only Available</label>
-                    </div>
+<script type="module">
+import {getBooks,updateBook} from "./js/db.js";
+import {getCurrentUser} from "./js/auth.js";
 
-                    <!-- Reset Button -->
-                    <button class="btn btn-outline-custom w-100 py-2 fs-13 mt-2" id="reset-filters-btn">
-                        Clear All Filters
-                    </button>
-                </div>
-            </div>
+let allBooks=[],filteredBooks=[],selectedBookId=null,selectedBookType="",currentPage=1;
+const booksPerPage=12;
 
-            <!-- Catalog Listing -->
-            <div class="col-lg-9" data-aos="fade-left">
-                <!-- Search Result Header -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="fs-14 text-muted fw-600"><span id="results-count">0</span> books found in database</span>
-                </div>
+document.addEventListener("DOMContentLoaded",async()=>{
+try{
+if(window.AOS)AOS.init({duration:600,once:true,offset:50});
+await loadBooksData(); setupSearchFromURL(); setupEvents(); updateHeroStatistics(); filterAndRenderBooks();
+setTimeout(()=>document.getElementById("loading-screen")?.classList.add("hide"),300);
+}catch(e){console.error(e);showEmptyState("Unable to load books","Please check your database configuration.");document.getElementById("loading-screen")?.classList.add("hide");}
+});
 
-                <!-- Grid of books -->
-                <div class="row g-4" id="books-grid-container">
-                    <!-- Dynamic book cards -->
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- BOOK DETAILS MODAL -->
-    <div class="modal fade pdf-modal" id="bookDetailsModal" tabindex="-1" aria-labelledby="bookDetailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-800" id="bookDetailsModalLabel">Book Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: var(--text-color) invert(1);"></button>
-                </div>
-                <div class="modal-body" id="book-modal-details-body">
-                    <!-- Loaded dynamically -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-custom" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary-custom" id="modal-reserve-btn">Reserve Hold</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Global Footer -->
-    <footer></footer>
-
-    <!-- Bootstrap 5 Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- AOS Library -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <!-- Script Module -->
-    <script type="module" src="js/app.js"></script>
-    <script type="module">
-        import { getBooks, updateBook } from "./js/db.js";
-        import { getCurrentUser } from "./js/auth.js";
-
-        let allBooks = [];
-        let selectedBookId = null;
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            // Load Books list
-            await loadBooksData();
-            
-            // Sync query from home page
-            const urlParams = new URLSearchParams(window.location.search);
-            const queryParam = urlParams.get("query");
-            if (queryParam) {
-                document.getElementById("search-bar").value = queryParam;
-            }
-            
-            // Render list
-            filterAndRenderBooks();
-
-            // Bind Listeners
-            document.getElementById("search-bar").addEventListener("input", filterAndRenderBooks);
-            document.getElementById("filter-dept").addEventListener("change", filterAndRenderBooks);
-            document.getElementById("filter-sem").addEventListener("change", filterAndRenderBooks);
-            document.getElementById("filter-avail").addEventListener("change", filterAndRenderBooks);
-            
-            document.getElementById("reset-filters-btn").addEventListener("click", () => {
-                document.getElementById("search-bar").value = "";
-                document.getElementById("filter-dept").value = "";
-                document.getElementById("filter-sem").value = "";
-                document.getElementById("filter-avail").checked = false;
-                filterAndRenderBooks();
-            });
-
-            // Bind Reserve button in Modal
-            document.getElementById("modal-reserve-btn").addEventListener("click", () => {
-                if (selectedBookId) {
-                    executeBookReservation(selectedBookId);
-                }
-            });
-        });
-
-        async function loadBooksData() {
-            try {
-                allBooks = await getBooks();
-            } catch (e) {
-                console.error("Failed to load catalog books:", e);
-            }
-        }
-
-        function filterAndRenderBooks() {
-            const query = document.getElementById("search-bar").value.toLowerCase();
-            const dept = document.getElementById("filter-dept").value;
-            const sem = document.getElementById("filter-sem").value;
-            const onlyAvail = document.getElementById("filter-avail").checked;
-
-            const filtered = allBooks.filter(book => {
-                const matchQuery = book.title.toLowerCase().includes(query) || 
-                                   book.author.toLowerCase().includes(query) || 
-                                   book.subject.toLowerCase().includes(query) || 
-                                   book.isbn.includes(query);
-                
-                const matchDept = dept === "" || book.department === dept;
-                const matchSem = sem === "" || book.semester.toString() === sem;
-                const matchAvail = !onlyAvail || book.available > 0;
-
-                return matchQuery && matchDept && matchSem && matchAvail;
-            });
-
-            document.getElementById("results-count").textContent = filtered.length;
-            renderBooksList(filtered);
-        }
-
-        function renderBooksList(books) {
-            const container = document.getElementById("books-grid-container");
-            if (books.length === 0) {
-                container.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <span class="material-icons text-muted" style="font-size: 64px;">menu_book</span>
-                        <h4 class="mt-3 text-muted">No books found matching criteria.</h4>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = books.map(book => {
-                const isAvail = book.available > 0;
-                const availBadge = isAvail 
-                    ? `<span class="badge bg-success-light text-success px-2 py-1 fs-11 rounded">Available: ${book.available}/${book.quantity}</span>`
-                    : `<span class="badge bg-danger-light text-danger px-2 py-1 fs-11 rounded">Out of Stock</span>`;
-                
-                const deptBadges = {
-                    CO: "bg-primary",
-                    IF: "bg-cyan",
-                    EE: "bg-warning",
-                    ME: "bg-success",
-                    CE: "bg-danger"
-                };
-                const deptBadgeClass = deptBadges[book.department] || "bg-secondary";
-
-                return `
-                    <div class="col-md-6 col-xxl-4">
-                        <div class="glass-card p-4 h-100 d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <span class="badge ${deptBadgeClass} text-white px-2 py-1 fs-11 rounded">Dept: ${book.department}</span>
-                                <span class="badge bg-secondary text-white px-2 py-1 fs-11 rounded">Sem ${book.semester}</span>
-                            </div>
-                            <h5 class="fw-700 text-truncate-2" style="height: 48px; line-height:1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${book.title}</h5>
-                            <p class="text-muted fs-13 mb-3">by ${book.author}</p>
-                            
-                            <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
-                                ${availBadge}
-                                <button class="btn btn-sm btn-primary-custom view-details-btn" data-id="${book.id}">View Details</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            // Attach event listeners
-            document.querySelectorAll(".view-details-btn").forEach(btn => {
-                btn.addEventListener("click", () => openBookModal(btn.dataset.id));
-            });
-        }
-
-        function openBookModal(id) {
-            const book = allBooks.find(b => b.id === id);
-            if (!book) return;
-
-            selectedBookId = id;
-            
-            const isAvail = book.available > 0;
-            const modalBody = document.getElementById("book-modal-details-body");
-            const reserveBtn = document.getElementById("modal-reserve-btn");
-
-            // Disable reserve button if unavailable
-            if (!isAvail) {
-                reserveBtn.disabled = true;
-                reserveBtn.textContent = "Unavailable";
-            } else {
-                reserveBtn.disabled = false;
-                reserveBtn.textContent = "Reserve Hold";
-            }
-
-            modalBody.innerHTML = `
-                <div class="row g-3">
-                    <div class="col-sm-4 text-center">
-                        <span class="material-icons text-primary" style="font-size: 80px;">book</span>
-                    </div>
-                    <div class="col-sm-8">
-                        <h5 class="fw-800 text-primary">${book.title}</h5>
-                        <p class="text-muted mb-2">by <strong>${book.author}</strong></p>
-                        
-                        <table class="table table-sm borderless fs-13 text-muted">
-                            <tr><td><strong>Subject:</strong></td><td>${book.subject}</td></tr>
-                            <tr><td><strong>Department:</strong></td><td>${book.department}</td></tr>
-                            <tr><td><strong>Semester:</strong></td><td>Semester ${book.semester}</td></tr>
-                            <tr><td><strong>Shelf Code:</strong></td><td>${book.location}</td></tr>
-                            <tr><td><strong>ISBN Code:</strong></td><td>${book.isbn}</td></tr>
-                            <tr><td><strong>Stock:</strong></td><td>${book.available} remaining of ${book.quantity}</td></tr>
-                        </table>
-                    </div>
-                </div>
-            `;
-
-            // Open bootstrap modal
-            const myModal = new bootstrap.Modal(document.getElementById('bookDetailsModal'));
-            myModal.show();
-        }
-
-        async function executeBookReservation(id) {
-            const user = getCurrentUser();
-            if (!user) {
-                window.showToast("Login Required", "You must log in to reserve books.", "warning");
-                // Dismiss modal and redirect to login
-                bootstrap.Modal.getInstance(document.getElementById('bookDetailsModal')).hide();
-                setTimeout(() => {
-                    window.location.href = "login.html?redirect=books.html";
-                }, 1200);
-                return;
-            }
-
-            // Check borrowing limit
-            const borrowingKey = `borrowings_${user.email}`;
-            let borrowings = JSON.parse(localStorage.getItem(borrowingKey)) || [];
-            
-            const activeCount = borrowings.filter(b => b.status === 'issued' || b.status === 'hold').length;
-            if (activeCount >= 3) {
-                window.showToast("Limit Exceeded", "You cannot borrow more than 3 books simultaneously.", "error");
-                bootstrap.Modal.getInstance(document.getElementById('bookDetailsModal')).hide();
-                return;
-            }
-
-            const book = allBooks.find(b => b.id === id);
-            if (book && book.available > 0) {
-                try {
-                    // Update available count in DB
-                    const nextAvailable = book.available - 1;
-                    await updateBook(id, { available: nextAvailable });
-                    
-                    // Add hold to student's record
-                    const newHold = {
-                        id: "BR" + Date.now(),
-                        title: book.title,
-                        author: book.author,
-                        location: book.location,
-                        issueDate: "---",
-                        dueDate: "---",
-                        status: "hold",
-                        fine: 0
-                    };
-                    borrowings.push(newHold);
-                    localStorage.setItem(borrowingKey, JSON.stringify(borrowings));
-
-                    window.showToast("Reserved Successfully", "Book hold placed! Pick it up at the desk.", "success");
-                    bootstrap.Modal.getInstance(document.getElementById('bookDetailsModal')).hide();
-                    
-                    // Reload data
-                    await loadBooksData();
-                    filterAndRenderBooks();
-                } catch (e) {
-                    window.showToast("Reservation Failed", e.message, "error");
-                }
-            }
-        }
-    </script>
-    <script src="js/chatbot.js"></script>
+async function loadBooksData(){const result=await getBooks();allBooks=(Array.isArray(result)?result:[]).map(normalizeBook)}
+function normalizeBook(b){return{id:b.id||("BOOK-"+Date.now()),title:b.title||"Untitled Engineering Book",author:b.author||"Unknown Author",subject:b.subject||"Engineering",isbn:String(b.isbn||"N/A"),department:b.department||"CO",semester:Number(b.semester||1),quantity:Number(b.quantity||1),available:Number(b.available??b.quantity??0),location:b.location||"Not Assigned",publisher:b.publisher||"Academic Publisher",year:Number(b.year||b.publicationYear||2024),type:b.type||b.bookType||"Textbook",rating:Number(b.rating||4),description:b.description||"Engineering academic resource available in the Department Library.",language:b.language||"English"}}
+function setupSearchFromURL(){const q=new URLSearchParams(location.search).get("query");if(q)document.getElementById("search-bar").value=q}
+function setupEvents(){
+const search=document.getElementById("search-bar");
+["input"].forEach(e=>search.addEventListener(e,()=>{currentPage=1;filterAndRenderBooks()}));
+["filter-dept","filter-sem","filter-year","filter-avail"].forEach(id=>document.getElementById(id).addEventListener("change",()=>{currentPage=1;filterAndRenderBooks()}));
+document.getElementById("sort-books").addEventListener("change",()=>{currentPage=1;filterAndRenderBooks()});
+document.getElementById("reset-filters-btn").addEventListener("click",resetFilters);
+document.querySelectorAll(".category-chip").forEach(ch=>ch.addEventListener("click",()=>{document.querySelectorAll(".category-chip").forEach(x=>x.classList.remove("active"));ch.classList.add("active");selectedBookType=ch.dataset.type||"";currentPage=1;filterAndRenderBooks()}));
+document.getElementById("modal-reserve-btn").addEventListener("click",()=>selectedBookId&&executeBookReservation(selectedBookId));
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();search.focus()}});
+}
+function filterAndRenderBooks(){
+const q=document.getElementById("search-bar").value.trim().toLowerCase(),d=document.getElementById("filter-dept").value,s=document.getElementById("filter-sem").value,y=document.getElementById("filter-year").value,a=document.getElementById("filter-avail").checked;
+filteredBooks=allBooks.filter(b=>{
+const text=[b.title,b.author,b.subject,b.isbn,b.publisher,b.department,b.location,b.type].join(" ").toLowerCase();
+return(!q||text.includes(q))&&(!d||b.department===d)&&(!s||String(b.semester)===s)&&(!y||String(b.year)===y)&&(!selectedBookType||b.type===selectedBookType)&&(!a||b.available>0)
+});
+applySorting();document.getElementById("results-count").textContent=filteredBooks.length;renderCurrentPage();
+}
+function applySorting(){const s=document.getElementById("sort-books").value;const f={ "title-asc":(a,b)=>a.title.localeCompare(b.title),"title-desc":(a,b)=>b.title.localeCompare(a.title),"year-desc":(a,b)=>b.year-a.year,"year-asc":(a,b)=>a.year-b.year,"rating-desc":(a,b)=>b.rating-a.rating,"available-desc":(a,b)=>b.available-a.available}[s];if(f)filteredBooks.sort(f)}
+function renderCurrentPage(){const start=(currentPage-1)*booksPerPage;renderBooksList(filteredBooks.slice(start,start+booksPerPage));renderPagination()}
+function renderBooksList(books){
+const c=document.getElementById("books-grid-container");
+if(!books.length){showEmptyState("No books found","Try changing your search or filter options.");return}
+c.innerHTML=books.map(createBookCard).join("");
+c.querySelectorAll(".view-details-btn").forEach(b=>b.addEventListener("click",()=>openBookModal(b.dataset.id)));
+c.querySelectorAll(".wishlist-btn").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();toggleWishlist(b.dataset.id,b)}));
+if(window.AOS)AOS.refresh();
+}
+function createBookCard(b){
+const av=b.available>0,di=getDepartmentInfo(b.department),wish=isWishlisted(b.id);
+return `<div class="col-sm-6 col-xl-4" data-aos="fade-up"><article class="book-card">
+<div class="book-cover"><button class="wishlist-btn ${wish?"active":""}" data-id="${esc(b.id)}"><i class="fa-${wish?"solid":"regular"} fa-heart"></i></button>
+<span class="material-icons book-cover-icon">${typeIcon(b.type)}</span><span class="book-type">${esc(b.type)}</span><span class="cover-code">${esc(b.id)}</span></div>
+<div class="book-content"><span class="book-dept" style="background:${di.bg};color:${di.color}"><i class="${di.icon}"></i>${di.name}</span>
+<h3 class="book-title">${esc(b.title)}</h3><p class="book-author"><i class="fa-solid fa-user-pen me-1"></i>${esc(b.author)}</p>
+<div class="book-meta"><div class="book-meta-item"><div class="book-meta-label">Semester</div><div class="book-meta-value">Sem ${b.semester}</div></div>
+<div class="book-meta-item"><div class="book-meta-label">Year</div><div class="book-meta-value">${b.year}</div></div>
+<div class="book-meta-item"><div class="book-meta-label">Subject</div><div class="book-meta-value">${esc(b.subject)}</div></div>
+<div class="book-meta-item"><div class="book-meta-label">Rating</div><div class="book-meta-value">⭐ ${b.rating.toFixed(1)}</div></div></div>
+<div class="book-footer"><div class="availability ${av?"available":"unavailable"}"><span class="availability-dot"></span>${av?`${b.available} Available`:"Out of Stock"}</div>
+<button class="details-btn view-details-btn" data-id="${esc(b.id)}">View Details <i class="fa-solid fa-arrow-right ms-1"></i></button></div></div></article></div>`
+}
+function getDepartmentInfo(d){return({CO:{name:"Computer Engineering",icon:"fa-solid fa-computer",bg:"#eff6ff",color:"#1d4ed8"},IF:{name:"Information Technology",icon:"fa-solid fa-code",bg:"#ecfeff",color:"#0e7490"},EE:{name:"Electrical Engineering",icon:"fa-solid fa-bolt",bg:"#fffbeb",color:"#b45309"},ME:{name:"Mechanical Engineering",icon:"fa-solid fa-gears",bg:"#f0fdf4",color:"#15803d"},CE:{name:"Civil Engineering",icon:"fa-solid fa-building",bg:"#fef2f2",color:"#b91c1c"}}[d]||{name:d,icon:"fa-solid fa-book",bg:"#f1f5f9",color:"#475569"})}
+function typeIcon(t){return t==="Reference"?"menu_book":t==="Lab Manual"?"science":t==="Competitive"?"workspace_premium":"auto_stories"}
+function openBookModal(id){
+const b=allBooks.find(x=>String(x.id)===String(id));if(!b)return;selectedBookId=id;const av=b.available>0,rb=document.getElementById("modal-reserve-btn");
+rb.disabled=!av;rb.innerHTML=av?'<i class="fa-solid fa-bookmark me-1"></i> Reserve Book':'<i class="fa-solid fa-ban me-1"></i> Currently Unavailable';
+document.getElementById("book-modal-details-body").innerHTML=`<div class="row g-4"><div class="col-md-4"><div class="modal-book-cover"><span class="material-icons">${typeIcon(b.type)}</span></div><div class="text-center mt-3"><div class="rating-stars">${stars(b.rating)}</div><small class="text-muted">${b.rating.toFixed(1)} / 5 Rating</small></div></div>
+<div class="col-md-8"><div class="mb-2"><span class="badge bg-primary">${esc(b.department)}</span> <span class="badge bg-secondary">Semester ${b.semester}</span> <span class="badge bg-light text-dark">${esc(b.type)}</span></div>
+<h2 class="modal-book-title">${esc(b.title)}</h2><p class="text-muted mb-4"><i class="fa-solid fa-user-pen me-1"></i>${esc(b.author)}</p>
+${row("Subject",b.subject)}${row("ISBN",b.isbn)}${row("Publisher",b.publisher)}${row("Publication Year",b.year)}${row("Shelf / Rack",b.location)}${row("Available Copies",`${b.available} / ${b.quantity}`)}</div>
+<div class="col-12"><div class="p-3 bg-light rounded-3"><h6 class="fw-bold"><i class="fa-solid fa-circle-info text-primary me-1"></i>About this book</h6><p class="text-muted small mb-0">${esc(b.description)}</p></div></div></div>`;
+bootstrap.Modal.getOrCreateInstance(document.getElementById("bookDetailsModal")).show()
+}
+function row(l,v){return `<div class="detail-row"><span class="detail-label">${esc(l)}</span><span class="detail-value">${esc(v)}</span></div>`}
+function stars(r){let x="";for(let i=1;i<=5;i++)x+=i<=Math.round(r)?"★":"☆";return x}
+async function executeBookReservation(id){
+const u=getCurrentUser();if(!u){toast("Login Required","Please login before reserving a book.","warning");closeModal();setTimeout(()=>location.href="login.html?redirect=books.html",800);return}
+const b=allBooks.find(x=>String(x.id)===String(id));if(!b||b.available<=0)return;
+const key=`borrowings_${u.email}`;let bor=[];try{bor=JSON.parse(localStorage.getItem(key))||[]}catch{}
+if(bor.filter(x=>x.status==="issued"||x.status==="hold").length>=3){toast("Borrowing Limit","You can have maximum 3 active books.","error");closeModal();return}
+if(bor.some(x=>x.bookId===id&&(x.status==="hold"||x.status==="issued"))){toast("Already Reserved","You already have this book in your active list.","warning");return}
+try{await updateBook(id,{available:b.available-1});bor.push({id:"BR"+Date.now(),bookId:b.id,title:b.title,author:b.author,department:b.department,semester:b.semester,location:b.location,issueDate:"---",dueDate:"---",status:"hold",fine:0,reservedAt:new Date().toISOString()});localStorage.setItem(key,JSON.stringify(bor));toast("Reservation Successful",`${b.title} has been reserved successfully.`,"success");closeModal();await loadBooksData();updateHeroStatistics();filterAndRenderBooks()}catch(e){toast("Reservation Failed",e.message||"Unable to reserve this book.","error")}}
+function closeModal(){bootstrap.Modal.getInstance(document.getElementById("bookDetailsModal"))?.hide()}
+function wishlist(){try{return JSON.parse(localStorage.getItem("library_wishlist"))||[]}catch{return[]}}
+function saveWishlist(x){localStorage.setItem("library_wishlist",JSON.stringify(x))}
+function isWishlisted(id){return wishlist().includes(String(id))}
+function toggleWishlist(id,btn){let w=wishlist(),x=String(id);if(w.includes(x)){w=w.filter(i=>i!==x);btn.classList.remove("active");btn.innerHTML='<i class="fa-regular fa-heart"></i>';toast("Wishlist","Book removed from wishlist.","info")}else{w.push(x);btn.classList.add("active");btn.innerHTML='<i class="fa-solid fa-heart"></i>';toast("Wishlist","Book added to your wishlist.","success")}saveWishlist(w)}
+function renderPagination(){
+const c=document.getElementById("pagination-container"),total=Math.ceil(filteredBooks.length/booksPerPage);if(total<=1){c.innerHTML="";return}
+let h=`<button class="page-btn" ${currentPage===1?"disabled":""} data-page="${currentPage-1}"><i class="fa-solid fa-chevron-left"></i></button>`;
+for(let p=1;p<=total;p++){if(p===1||p===total||Math.abs(p-currentPage)<=2)h+=`<button class="page-btn ${p===currentPage?"active":""}" data-page="${p}">${p}</button>`;else if(p===2&&currentPage>4)h+=`<span class="px-2 text-muted">...</span>`;else if(p===total-1&&currentPage<total-3)h+=`<span class="px-2 text-muted">...</span>`}
+h+=`<button class="page-btn" ${currentPage===total?"disabled":""} data-page="${currentPage+1}"><i class="fa-solid fa-chevron-right"></i></button>`;c.innerHTML=h;
+c.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>{const p=Number(b.dataset.page);if(p<1||p>total)return;currentPage=p;renderCurrentPage();scrollTo({top:400,behavior:"smooth"})}))
+}
+function updateHeroStatistics(){
+const total=allBooks.reduce((n,b)=>n+b.quantity,0),av=allBooks.reduce((n,b)=>n+b.available,0),d=new Set(allBooks.map(b=>b.department)),s=new Set(allBooks.map(b=>b.semester));
+document.getElementById("hero-total-books").textContent=total;document.getElementById("hero-available-books").textContent=av;document.getElementById("hero-departments").textContent=d.size||5;document.getElementById("hero-semesters").textContent=s.size||6
+}
+function showEmptyState(t,m){document.getElementById("books-grid-container").innerHTML=`<div class="col-12"><div class="empty-state"><span class="material-icons">menu_book</span><h4>${esc(t)}</h4><p>${esc(m)}</p><button class="btn btn-primary mt-2" id="empty-reset-btn">Reset Filters</button></div></div>`;document.getElementById("empty-reset-btn")?.addEventListener("click",resetFilters)}
+function resetFilters(){document.getElementById("search-bar").value="";document.getElementById("filter-dept").value="";document.getElementById("filter-sem").value="";document.getElementById("filter-year").value="";document.getElementById("filter-avail").checked=false;document.getElementById("sort-books").value="relevance";selectedBookType="";document.querySelectorAll(".category-chip").forEach(x=>x.classList.remove("active"));document.querySelector('.category-chip[data-type=""]')?.classList.add("active");currentPage=1;filterAndRenderBooks()}
+function toast(title,msg,type="info"){if(typeof window.showToast==="function"){window.showToast(title,msg,type);return}const old=document.getElementById("library-fallback-toast");old?.remove();document.body.insertAdjacentHTML("beforeend",`<div id="library-fallback-toast" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:99999"><div class="toast text-bg-${type==="success"?"success":type==="error"?"danger":type==="warning"?"warning":"primary"}" role="alert"><div class="toast-header"><strong class="me-auto">${esc(title)}</strong><button class="btn-close" data-bs-dismiss="toast"></button></div><div class="toast-body">${esc(msg)}</div></div></div>`);new bootstrap.Toast(document.querySelector("#library-fallback-toast .toast"),{delay:3500}).show()}
+function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+</script>
+<script src="js/chatbot.js"></script>
 </body>
 </html>
