@@ -9,4 +9,4 @@ backend/logs/
 
 # OS
 .DS_Store
-Thumbs.dbbackend/.env
+Thumbs.db
