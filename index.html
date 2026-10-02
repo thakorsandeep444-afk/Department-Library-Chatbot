@@ -112,6 +112,25 @@
             </div>
         </div>
     </section>
+    <!-- Popular Books + Recently Added Books -->
+<section class="py-5" id="book-highlights">
+    <div class="container">
+        <div class="mb-5" data-aos="fade-up">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-800 mb-0 d-flex align-items-center gap-2"><span class="material-icons text-primary">local_fire_department</span> Popular Books</h4>
+                <a href="books.html" class="text-primary fw-600 fs-14 hover-link">View All</a>
+            </div>
+            <div class="book-row" id="popular-books-container"></div>
+        </div>
+        <div data-aos="fade-up">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-800 mb-0 d-flex align-items-center gap-2"><span class="material-icons text-primary">new_releases</span> Recently Added Books</h4>
+                <a href="books.html" class="text-primary fw-600 fs-14 hover-link">View All</a>
+            </div>
+            <div class="book-row" id="recent-books-container"></div>
+        </div>
+    </div>
+</section>
 
     <!-- Library Live Statistics -->
     <section class="py-5 bg-primary-light" style="background: var(--primary-light);">
@@ -357,7 +376,66 @@
                 document.getElementById("stat-avail-books").textContent = availBooks;
                 document.getElementById("stat-issued-books").textContent = totalBooks - availBooks;
                 document.getElementById("stat-faculty").textContent = faculty.length;
+                // Popular (સૌથી વધુ issue થયેલ) + Recently Added (નવા ઉમેરેલ)
+const esc = (t) => String(t ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const deptInfo = (d) => ({
+    CO: { name: "Computer Engineering", icon: "fa-solid fa-computer", bg: "#eff6ff", color: "#1d4ed8" },
+    IF: { name: "Information Technology", icon: "fa-solid fa-code", bg: "#ecfeff", color: "#0e7490" },
+    EE: { name: "Electrical Engineering", icon: "fa-solid fa-bolt", bg: "#fffbeb", color: "#b45309" },
+    ME: { name: "Mechanical Engineering", icon: "fa-solid fa-gears", bg: "#f0fdf4", color: "#15803d" },
+    CE: { name: "Civil Engineering", icon: "fa-solid fa-building", bg: "#fef2f2", color: "#b91c1c" }
+}[d] || { name: d, icon: "fa-solid fa-book", bg: "#f1f5f9", color: "#475569" });
+const typeIcon = (t) => t === "Reference" ? "menu_book" : t === "Lab Manual" ? "science" : t === "Competitive" ? "workspace_premium" : "auto_stories";
 
+const norm = (b) => ({
+    id: b.id, addedAt: b.addedAt || "",
+    title: b.title || "Untitled Engineering Book",
+    author: b.author || "Unknown Author",
+    subject: b.subject || "Engineering",
+    department: b.department || "CO",
+    semester: Number(b.semester || 1),
+    quantity: Number(b.quantity || 1),
+    available: Number(b.available ?? b.quantity ?? 0),
+    year: Number(b.year || b.publicationYear || 2024),
+    type: b.type || b.bookType || "Textbook",
+    rating: Number(b.rating || 4)
+});
+
+const bookCard = (b, badge, rank) => {
+    const av = b.available > 0, di = deptInfo(b.department);
+    return `<div class="book-col"><article class="book-card">
+        <div class="book-cover">${rank ? `<span class="book-rank">${rank}</span>` : ''}
+            <span class="material-icons book-cover-icon">${typeIcon(b.type)}</span>
+            <span class="book-type">${esc(badge)}</span><span class="cover-code">${esc(b.id)}</span></div>
+        <div class="book-content">
+            <span class="book-dept" style="background:${di.bg};color:${di.color}"><i class="${di.icon}"></i>${di.name}</span>
+            <h3 class="book-title">${esc(b.title)}</h3>
+            <p class="book-author"><i class="fa-solid fa-user-pen me-1"></i>${esc(b.author)}</p>
+            <div class="book-meta">
+                <div class="book-meta-item"><div class="book-meta-label">Semester</div><div class="book-meta-value">Sem ${b.semester}</div></div>
+                <div class="book-meta-item"><div class="book-meta-label">Year</div><div class="book-meta-value">${b.year}</div></div>
+                <div class="book-meta-item"><div class="book-meta-label">Subject</div><div class="book-meta-value">${esc(b.subject)}</div></div>
+                <div class="book-meta-item"><div class="book-meta-label">Rating</div><div class="book-meta-value">⭐ ${b.rating.toFixed(1)}</div></div>
+            </div>
+            <div class="book-footer">
+                <div class="availability ${av ? 'available' : 'unavailable'}"><span class="availability-dot"></span>${av ? b.available + ' Available' : 'Out of Stock'}</div>
+                <a class="details-btn" href="books.html?query=${encodeURIComponent(b.title)}">View Details <i class="fa-solid fa-arrow-right ms-1"></i></a>
+            </div>
+        </div></article></div>`;
+};
+
+const issuedCount = (b) => b.quantity - b.available;
+const addedTime = (b) => b.addedAt ? new Date(b.addedAt).getTime() : 0;
+const normalized = books.map(norm);
+
+const popular = [...normalized].sort((a, b) => issuedCount(b) - issuedCount(a)).slice(0, 8);
+const recent = [...normalized].sort((a, b) => addedTime(b) - addedTime(a) || String(b.id).localeCompare(String(a.id))).slice(0, 8);
+
+document.getElementById("popular-books-container").innerHTML =
+    popular.map((b, i) => bookCard(b, issuedCount(b) + ' Issued', i + 1)).join('');
+document.getElementById("recent-books-container").innerHTML =
+    recent.map(b => bookCard(b, 'New', 0)).join('');
+                                    
                 // Load first 3 notices
                 const noticesContainer = document.getElementById("home-notices-container");
                 const latestNotices = notices.slice(0, 3);
