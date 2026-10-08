@@ -12,6 +12,9 @@
     --font-primary: 'Outfit', sans-serif;
 
     /* Light Theme (Default) */
+    --heading-color: #0f172a;
+    --nav-link-color: #0f172a;
+    --nav-link-hover: #0b5ed7;
     --primary-color: #0b5ed7;
     --primary-light: #eef2ff;
     --accent-cyan: #06b6d4;
