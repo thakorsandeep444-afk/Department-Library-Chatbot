@@ -192,54 +192,41 @@
     </section>
 
     <!-- Notice Ticker & Highlights -->
+        <!-- Library Operational Info -->
     <section class="py-5">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-8" data-aos="fade-up">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h4 class="fw-800 mb-0 d-flex align-items-center gap-2"><span class="material-icons text-primary">campaign</span> Latest Announcements</h4>
-                        <a href="notice.html" class="text-primary fw-600 fs-14 hover-link">View All Notices</a>
+            <div class="glass-card p-4" data-aos="fade-up">
+                <h5 class="fw-800 mb-4 d-flex align-items-center gap-2 text-primary">
+                    <span class="material-icons">info</span> Library Operational Info
+                </h5>
+                <div class="row g-4 fs-14">
+                    <div class="col-md-6 col-lg-3 d-flex align-items-start gap-2">
+                        <span class="material-icons text-success fs-18">check_circle</span>
+                        <div>
+                            <strong class="text-color">Book Limit:</strong>
+                            <p class="text-muted mb-0">Max 3 books per student can be checked out at once.</p>
+                        </div>
                     </div>
-                    <div class="d-flex flex-column gap-3" id="home-notices-container">
-                        <!-- Dynamic notices injected here -->
+                    <div class="col-md-6 col-lg-3 d-flex align-items-start gap-2">
+                        <span class="material-icons text-success fs-18">check_circle</span>
+                        <div>
+                            <strong class="text-color">Borrowing Duration:</strong>
+                            <p class="text-muted mb-0">Issued books must be returned within 14 days.</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="glass-card p-4 h-100">
-                        <h5 class="fw-800 mb-3 d-flex align-items-center gap-2 text-primary">
-                            <span class="material-icons">info</span> Library Operational Info
-                        </h5>
-                        <ul class="list-unstyled d-flex flex-column gap-3 fs-14">
-                            <li class="d-flex align-items-start gap-2">
-                                <span class="material-icons text-success fs-18">check_circle</span>
-                                <div>
-                                    <strong class="text-color">Book Limit:</strong>
-                                    <p class="text-muted mb-0">Max 3 books per student can be checked out at once.</p>
-                                </div>
-                            </li>
-                            <li class="d-flex align-items-start gap-2">
-                                <span class="material-icons text-success fs-18">check_circle</span>
-                                <div>
-                                    <strong class="text-color">Borrowing Duration:</strong>
-                                    <p class="text-muted mb-0">Issued books must be returned within 14 days.</p>
-                                </div>
-                            </li>
-                            <li class="d-flex align-items-start gap-2">
-                                <span class="material-icons text-success fs-18">check_circle</span>
-                                <div>
-                                    <strong class="text-color">Late Return Penalty:</strong>
-                                    <p class="text-muted mb-0">₹2 per day per book fine thereafter.</p>
-                                </div>
-                            </li>
-                            <li class="d-flex align-items-start gap-2">
-                                <span class="material-icons text-success fs-18">check_circle</span>
-                                <div>
-                                    <strong class="text-color">ID Cards Mandatory:</strong>
-                                    <p class="text-muted mb-0">Barcode scanning requires physical student ID card.</p>
-                                </div>
-                            </li>
-                        </ul>
+                    <div class="col-md-6 col-lg-3 d-flex align-items-start gap-2">
+                        <span class="material-icons text-success fs-18">check_circle</span>
+                        <div>
+                            <strong class="text-color">Late Return Penalty:</strong>
+                            <p class="text-muted mb-0">₹2 per day per book fine thereafter.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 d-flex align-items-start gap-2">
+                        <span class="material-icons text-success fs-18">check_circle</span>
+                        <div>
+                            <strong class="text-color">ID Cards Mandatory:</strong>
+                            <p class="text-muted mb-0">Barcode scanning requires physical student ID card.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -443,24 +430,7 @@ document.getElementById("popular-books-container").innerHTML =
 document.getElementById("recent-books-container").innerHTML =
     recent.map(b => bookCard(b, 'New', 0)).join('');
                                     
-                // Load first 3 notices
-                const noticesContainer = document.getElementById("home-notices-container");
-                const latestNotices = notices.slice(0, 3);
-                
-                if (latestNotices.length === 0) {
-                    noticesContainer.innerHTML = `<div class="text-muted text-center py-4">No notices found.</div>`;
-                } else {
-                    noticesContainer.innerHTML = latestNotices.map(notice => `
-                        <div class="glass-card p-4 ${notice.important ? 'border-start border-4 border-danger' : ''}">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge ${notice.category === 'Exam' ? 'bg-danger' : 'bg-primary'} px-3 py-1 rounded-pill fs-11">${notice.category}</span>
-                                <span class="fs-12 text-muted fw-500">${notice.date}</span>
-                            </div>
-                            <h5 class="fw-700">${notice.title}</h5>
-                            <p class="text-muted mb-0 fs-14">${notice.content}</p>
-                        </div>
-                    `).join('');
-                }
+               
             } catch (e) {
                 console.error("Error loading home details:", e);
             }
