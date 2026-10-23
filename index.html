@@ -275,6 +275,8 @@
                 <!-- QR Image Container -->
                 <div 
                   class="qr-image-container bg-white p-3 rounded-3 shadow-sm d-inline-block mb-4"
+                    data-aos="zoom-in"
+                    data-aos-delay="200"
                 >
                   <img
     src="assets/images/department-library-chatbot-qr.png"
@@ -446,6 +448,28 @@ document.getElementById("recent-books-container").innerHTML =
                 if (e.key === "Enter") triggerSearch();
             });
         });
+    </script>
+        <script>
+        // QR section દર વખતે screen માં આવે ત્યારે animation ફરી ચાલે
+        (function () {
+            var section = document.getElementById("qr-code");
+            if (!section || !("IntersectionObserver" in window)) return;
+
+            // JS ચાલે તો જ animation ની શરૂઆતની (છુપાયેલી) સ્થિતિ લાગે
+            document.documentElement.classList.add("qr-anim");
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.intersectionRatio >= 0.2) {
+                        section.classList.add("qr-in-view");
+                    } else if (entry.intersectionRatio === 0) {
+                        section.classList.remove("qr-in-view");
+                    }
+                });
+            }, { threshold: [0, 0.2] });
+
+            observer.observe(section);
+        })();
     </script>
     <script src="js/chatbot.js"></script>
     <div style="text-align:center;margin:20px;">

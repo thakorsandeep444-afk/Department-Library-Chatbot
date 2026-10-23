@@ -2302,3 +2302,176 @@ textarea{
     background: rgba(255, 255, 255, .05);
     border-color: rgba(255, 255, 255, .08);
 }
+/* =========================================================
+   QR CODE - SCANNER FRAME + HOVER ANIMATION
+   ========================================================= */
+
+/* સ્કેનરના ચાર ખૂણા (corner brackets) */
+.qr-image-container {
+    position: relative;
+}
+
+.qr-image-container::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 10px;
+    pointer-events: none;
+    z-index: 3;
+    background:
+        linear-gradient(var(--primary-color), var(--primary-color)) top left / 24px 3px no-repeat,
+        linear-gradient(var(--primary-color), var(--primary-color)) top left / 3px 24px no-repeat,
+        linear-gradient(var(--primary-color), var(--primary-color)) top right / 24px 3px no-repeat,
+        linear-gradient(var(--primary-color), var(--primary-color)) top right / 3px 24px no-repeat,
+        linear-gradient(var(--primary-color), var(--primary-color)) bottom left / 24px 3px no-repeat,
+        linear-gradient(var(--primary-color), var(--primary-color)) bottom left / 3px 24px no-repeat,
+        linear-gradient(var(--primary-color), var(--primary-color)) bottom right / 24px 3px no-repeat,
+        linear-gradient(var(--primary-color), var(--primary-color)) bottom right / 3px 24px no-repeat;
+    animation: qrCorners 2s ease-in-out infinite;
+}
+
+@keyframes qrCorners {
+    0%, 100% { inset: 4px;  opacity: 1; }
+    50%      { inset: 11px; opacity: .55; }
+}
+
+/* Mouse લઈ જાઓ ત્યારે QR હળવો ફરે અને મોટો થાય */
+.qr-image-container img {
+    transition: transform .4s ease;
+}
+
+.qr-image-container:hover img {
+    transform: rotate(-2deg) scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qr-image-container::before {
+        animation: none;
+    }
+    .qr-image-container:hover img {
+        transform: none;
+    }
+}
+/* =========================================================
+   QR - MORE VISIBLE ANIMATIONS
+   ========================================================= */
+
+/* 1. Card ની ચારે બાજુ ફરતી રંગીન ચમક */
+.qr-card-wrapper {
+    position: relative;
+    width: min(100%, 398px);
+    padding: 4px;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.qr-card-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    aspect-ratio: 1 / 1;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0 55%,
+        var(--accent-cyan) 75%,
+        var(--primary-color) 90%,
+        transparent 100%
+    );
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: qrSpin 3s linear infinite;
+}
+
+.qr-card-wrapper .qr-card {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes qrSpin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* 2. QR નો ધબકારો */
+.qr-image-container img {
+    animation: qrBeat 2.4s ease-in-out infinite;
+}
+
+@keyframes qrBeat {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.05); }
+}
+
+/* 3. Ripple તરંગો */
+.qr-image-container {
+    animation: qrRipple 2s ease-out infinite;
+}
+
+@keyframes qrRipple {
+    0%   { box-shadow: 0 0 0 0   rgba(11, 94, 215, .50); }
+    100% { box-shadow: 0 0 0 26px rgba(11, 94, 215, 0); }
+}
+
+/* 4. "Scan Here" પર સરકતો રંગીન પ્રકાશ */
+.qr-card .qr-info h5 {
+    background: linear-gradient(
+        90deg,
+        var(--primary-color),
+        var(--accent-cyan),
+        var(--primary-color)
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: qrShine 3s linear infinite;
+}
+
+@keyframes qrShine {
+    to { background-position: 200% center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qr-card-wrapper::before,
+    .qr-image-container,
+    .qr-image-container img,
+    .qr-card .qr-info h5 {
+        animation: none;
+    }
+}
+/* =========================================================
+   QR - દર વખતે scroll કરતાં entrance animation
+   ========================================================= */
+
+/* શરૂઆતની સ્થિતિ (ફક્ત JS ચાલતું હોય ત્યારે) */
+.qr-anim #qr-code .text-center {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
+}
+
+.qr-anim #qr-code .qr-image-container {
+    opacity: 0;
+    transform: scale(.5) rotate(-8deg);
+    transition: opacity .7s ease .3s, transform .9s cubic-bezier(.34, 1.56, .64, 1) .3s;
+}
+
+/* Screen માં આવે ત્યારે */
+.qr-anim #qr-code.qr-in-view .text-center {
+    opacity: 1;
+    transform: none;
+}
+
+.qr-anim #qr-code.qr-in-view .qr-image-container {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qr-anim #qr-code .text-center,
+    .qr-anim #qr-code .qr-image-container {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
