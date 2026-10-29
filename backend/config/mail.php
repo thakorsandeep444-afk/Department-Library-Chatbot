@@ -1,3 +1,4 @@
+
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -11,25 +12,33 @@ function getMailer()
 {
     $mail = new PHPMailer(true);
 
+    // Gmail SMTP settings
     $mail->isSMTP();
+    $mail->Host       = "smtp.gmail.com";
+    $mail->SMTPAuth   = true;
 
-    $mail->Host = "smtp.gmail.com";
-    $mail->SMTPAuth = true;
+    // Read credentials from Windows environment variables
+    $username = getenv("MAIL_USERNAME");
+    $password = getenv("MAIL_PASSWORD");
 
-    // Fallback to direct credentials if environment variables aren't set
-    $username = getenv("MAIL_USERNAME") ?: "departmentlibrary.ai@gmail.com";
-    $password = getenv("MAIL_PASSWORD") ?: "uxobtjrsfqpnqsch"; // Replace with your 16-character App Password
+    // Stop if credentials are missing
+    if (!$username || !$password) {
+        throw new RuntimeException(
+            "Mail configuration is missing. Set MAIL_USERNAME and MAIL_PASSWORD."
+        );
+    }
 
-    $mail->Username = $username;
-    $mail->Password = $password;
+    $mail->Username   = $username;
+    $mail->Password   = $password;
 
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    $mail->Port       = 587;
 
-    // Sender email must match the authenticated Gmail username
     $mail->setFrom($username, "Department Library");
 
+    // Email format
     $mail->isHTML(true);
+    $mail->CharSet = "UTF-8";
 
     return $mail;
 }
