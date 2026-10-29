@@ -38,7 +38,7 @@
                     <span class="badge bg-primary-light text-primary px-3 py-2 rounded-pill fw-600 mb-3 fs-12 uppercase">Academic Library Portal</span>
                     <h1 class="hero-title">Unlock Knowledge with <br><span>AI Assistance</span></h1>
                     <p class="hero-subtitle">Access department books, previous year GTU papers, electronic study guides, and chat with Liby, our virtual assistant librarian, for instant queries.</p>
-                    
+
                     <!-- Hero Book Search Input -->
                     <div class="glass-card p-2 mb-4 d-flex align-items-center gap-2">
                         <span class="material-icons text-primary ms-3">search</span>
@@ -75,41 +75,59 @@
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
                     <div class="glass-card quick-access-card" onclick="window.location.href='books.html'">
-                        <div class="quick-icon-box">
-                            <span class="material-icons">menu_book</span>
-                        </div>
+                        <div class="quick-icon-box"><span class="material-icons">menu_book</span></div>
                         <h5 class="fw-700">Book Catalog</h5>
                         <p class="text-muted fs-13 mb-0">Search library stack shelves, filter by authors or subjects, and check availability status.</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
                     <div class="glass-card quick-access-card" onclick="window.location.href='papers.html'">
-                        <div class="quick-icon-box">
-                            <span class="material-icons">history_edu</span>
-                        </div>
+                        <div class="quick-icon-box"><span class="material-icons">history_edu</span></div>
                         <h5 class="fw-700">GTU Papers</h5>
                         <p class="text-muted fs-13 mb-0">Prepare for exams by downloading previous years' semester-wise subject papers.</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
                     <div class="glass-card quick-access-card" onclick="window.location.href='ebooks.html'">
-                        <div class="quick-icon-box">
-                            <span class="material-icons">tablet_mac</span>
-                        </div>
+                        <div class="quick-icon-box"><span class="material-icons">tablet_mac</span></div>
                         <h5 class="fw-700">E-Books Library</h5>
                         <p class="text-muted fs-13 mb-0">Download curriculum textbooks, digital references, and programming PDF sheets instantly.</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
                     <div class="glass-card quick-access-card" onclick="window.location.href='notice.html'">
-                        <div class="quick-icon-box">
-                            <span class="material-icons">campaign</span>
-                        </div>
+                        <div class="quick-icon-box"><span class="material-icons">campaign</span></div>
                         <h5 class="fw-700">Notice Board</h5>
                         <p class="text-muted fs-13 mb-0">Stay informed on exam schedule forms, operational guidelines, and placement circulars.</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Popular Books Section -->
+    <section class="py-5" id="popular-books">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-800 mb-0 d-flex align-items-center gap-2">
+                    <span class="material-icons text-primary">local_fire_department</span> Popular Books
+                </h4>
+                <a href="books.html" class="text-primary fw-600 fs-14">View All</a>
+            </div>
+            <div class="book-row" id="popular-books-container"></div>
+        </div>
+    </section>
+
+    <!-- Recently Added Section -->
+    <section class="py-5 section-recent" id="recent-books">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-800 mb-0 d-flex align-items-center gap-2">
+                    <span class="material-icons text-primary">new_releases</span> Recently Added Books
+                </h4>
+                <a href="books.html" class="text-primary fw-600 fs-14">View All</a>
+            </div>
+            <div class="book-row" id="recent-books-container"></div>
         </div>
     </section>
 
@@ -165,67 +183,103 @@
         </div>
     </section>
 
-    <!-- Notice Ticker & Highlights -->
+    <!-- Library Operational Info -->
     <section class="py-5">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-8" data-aos="fade-up">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h4 class="fw-800 mb-0 d-flex align-items-center gap-2"><span class="material-icons text-primary">campaign</span> Latest Announcements</h4>
-                        <a href="notice.html" class="text-primary fw-600 fs-14 hover-link">View All Notices</a>
+            <div class="glass-card p-4" data-aos="fade-up">
+                <h5 class="fw-800 mb-4 d-flex align-items-center gap-2 text-primary">
+                    <span class="material-icons">info</span> Library Operational Info
+                </h5>
+                <div class="row g-4 fs-14">
+                    <div class="col-md-6 col-lg-3 d-flex align-items-start gap-2">
+                        <span class="material-icons text-success fs-18">check_circle</span>
+                        <div>
+                            <strong class="text-color">Book Limit:</strong>
+                            <p class="text-muted mb-0">Max 3 books per student can be checked out at once.</p>
+                        </div>
                     </div>
-                    <div class="d-flex flex-column gap-3" id="home-notices-container">
-                        <!-- Dynamic notices injected here -->
+                    <div class="col-md-6 col-lg-3 d-flex align-items-start gap-2">
+                        <span class="material-icons text-success fs-18">check_circle</span>
+                        <div>
+                            <strong class="text-color">Borrowing Duration:</strong>
+                            <p class="text-muted mb-0">Issued books must be returned within 14 days.</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="glass-card p-4 h-100">
-                        <h5 class="fw-800 mb-3 d-flex align-items-center gap-2 text-primary">
-                            <span class="material-icons">info</span> Library Operational Info
-                        </h5>
-                        <ul class="list-unstyled d-flex flex-column gap-3 fs-14">
-                            <li class="d-flex align-items-start gap-2">
-                                <span class="material-icons text-success fs-18">check_circle</span>
-                                <div>
-                                    <strong class="text-color">Book Limit:</strong>
-                                    <p class="text-muted mb-0">Max 3 books per student can be checked out at once.</p>
-                                </div>
-                            </li>
-                            <li class="d-flex align-items-start gap-2">
-                                <span class="material-icons text-success fs-18">check_circle</span>
-                                <div>
-                                    <strong class="text-color">Borrowing Duration:</strong>
-                                    <p class="text-muted mb-0">Issued books must be returned within 14 days.</p>
-                                </div>
-                            </li>
-                            <li class="d-flex align-items-start gap-2">
-                                <span class="material-icons text-success fs-18">check_circle</span>
-                                <div>
-                                    <strong class="text-color">Late Return Penalty:</strong>
-                                    <p class="text-muted mb-0">₹2 per day per book fine thereafter.</p>
-                                </div>
-                            </li>
-                            <li class="d-flex align-items-start gap-2">
-                                <span class="material-icons text-success fs-18">check_circle</span>
-                                <div>
-                                    <strong class="text-color">ID Cards Mandatory:</strong>
-                                    <p class="text-muted mb-0">Barcode scanning requires physical student ID card.</p>
-                                </div>
-                            </li>
-                        </ul>
+                    <div class="col-md-6 col-lg-3 d-flex align-items-start gap-2">
+                        <span class="material-icons text-success fs-18">check_circle</span>
+                        <div>
+                            <strong class="text-color">Late Return Penalty:</strong>
+                            <p class="text-muted mb-0">₹2 per day per book fine thereafter.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 d-flex align-items-start gap-2">
+                        <span class="material-icons text-success fs-18">check_circle</span>
+                        <div>
+                            <strong class="text-color">ID Cards Mandatory:</strong>
+                            <p class="text-muted mb-0">Barcode scanning requires physical student ID card.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- ============================================ -->
+    <!-- Department Library Chatbot - QR Code Section -->
+    <!-- K.D. Polytechnic, Patan                      -->
+    <!-- Computer Engineering Department              -->
+    <!-- (Download / Share / Print buttons are added  -->
+    <!--  automatically by js/qr-actions.js)          -->
+    <!-- ============================================ -->
+    <section id="qr-code" class="department-qr-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center">
+
+                        <h2 class="section-title fw-bold mb-3">Department Library Chatbot</h2>
+
+                        <p class="section-subtitle text-muted mb-5">
+                            Scan the QR code to access the Department Library Chatbot instantly
+                        </p>
+
+                        <!-- QR Card Start -->
+                        <div class="qr-card-wrapper mx-auto">
+                            <div class="card qr-card border-0 shadow-lg rounded-4">
+                                <div class="card-body p-5">
+
+                                    <!-- QR Image Container -->
+                                    <div class="qr-image-container bg-white p-3 rounded-3 shadow-sm d-inline-block mb-4">
+                                        <img src="assets/images/department-library-chatbot-qr.png" alt="Department Library Chatbot QR Code" class="img-fluid">
+                                    </div>
+
+                                    <!-- Scan Text -->
+                                    <div class="qr-info">
+                                        <h5 class="fw-bold text-primary mb-2">Scan Here</h5>
+                                        <p class="college-name mb-1 fw-semibold">K.D. Polytechnic, Patan</p>
+                                        <p class="department-name mb-0 text-muted">Computer Engineering Department</p>
+                                    </div>
+
+                                    <hr class="my-4">
+
+                                    <div class="qr-footer">
+                                        <small class="text-muted">Powered by AI Chatbot System</small>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- QR Card End -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End QR Code Section -->
+
     <!-- Global Footer (Footer injected here) -->
-    <footer>
-
-    </footer>
-
-</div>
+    <footer></footer>
 
     <!-- Bootstrap 5 Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -234,62 +288,131 @@
     <!-- Page Logic Integration -->
     <script type="module" src="js/app.js"></script>
     <script type="module">
-        import { getBooks, getNotices, getFaculty } from "./js/db.js";
+        import { getBooks, getFaculty } from "./js/db.js";
 
         document.addEventListener("DOMContentLoaded", async () => {
-            // Load homepage stats
             try {
                 const books = await getBooks();
-                const notices = await getNotices();
                 const faculty = await getFaculty();
 
-                // Compute stats variables
+                // Library statistics
                 let totalBooks = 0;
                 let availBooks = 0;
                 books.forEach(b => {
                     totalBooks += b.quantity || 0;
                     availBooks += b.available || 0;
                 });
-                
+
                 document.getElementById("stat-total-books").textContent = totalBooks;
                 document.getElementById("stat-avail-books").textContent = availBooks;
                 document.getElementById("stat-issued-books").textContent = totalBooks - availBooks;
                 document.getElementById("stat-faculty").textContent = faculty.length;
 
-                // Load first 3 notices
-                const noticesContainer = document.getElementById("home-notices-container");
-                const latestNotices = notices.slice(0, 3);
-                
-                if (latestNotices.length === 0) {
-                    noticesContainer.innerHTML = `<div class="text-muted text-center py-4">No notices found.</div>`;
-                } else {
-                    noticesContainer.innerHTML = latestNotices.map(notice => `
-                        <div class="glass-card p-4 ${notice.important ? 'border-start border-4 border-danger' : ''}">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge ${notice.category === 'Exam' ? 'bg-danger' : 'bg-primary'} px-3 py-1 rounded-pill fs-11">${notice.category}</span>
-                                <span class="fs-12 text-muted fw-500">${notice.date}</span>
-                            </div>
-                            <h5 class="fw-700">${notice.title}</h5>
-                            <p class="text-muted mb-0 fs-14">${notice.content}</p>
-                        </div>
-                    `).join('');
-                }
+                // Popular (most issued) + Recently Added books
+                const esc = (t) => String(t ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+                const deptInfo = (d) => ({
+                    CO: { name: "Computer Engineering", icon: "fa-solid fa-computer", bg: "#eff6ff", color: "#1d4ed8" },
+                    IF: { name: "Information Technology", icon: "fa-solid fa-code", bg: "#ecfeff", color: "#0e7490" },
+                    EE: { name: "Electrical Engineering", icon: "fa-solid fa-bolt", bg: "#fffbeb", color: "#b45309" },
+                    ME: { name: "Mechanical Engineering", icon: "fa-solid fa-gears", bg: "#f0fdf4", color: "#15803d" },
+                    CE: { name: "Civil Engineering", icon: "fa-solid fa-building", bg: "#fef2f2", color: "#b91c1c" }
+                }[d] || { name: d, icon: "fa-solid fa-book", bg: "#f1f5f9", color: "#475569" });
+                const typeIcon = (t) => t === "Reference" ? "menu_book" : t === "Lab Manual" ? "science" : t === "Competitive" ? "workspace_premium" : "auto_stories";
+
+                const norm = (b) => ({
+                    id: b.id, addedAt: b.addedAt || "",
+                    title: b.title || "Untitled Engineering Book",
+                    author: b.author || "Unknown Author",
+                    subject: b.subject || "Engineering",
+                    department: b.department || "CO",
+                    semester: Number(b.semester || 1),
+                    quantity: Number(b.quantity || 1),
+                    available: Number(b.available ?? b.quantity ?? 0),
+                    year: Number(b.year || b.publicationYear || 2024),
+                    type: b.type || b.bookType || "Textbook",
+                    rating: Number(b.rating || 4)
+                });
+
+                const bookCard = (b, badge, rank) => {
+                    const av = b.available > 0, di = deptInfo(b.department);
+                    return `<div class="book-col"><article class="book-card">
+        <div class="book-cover">${rank ? `<span class="book-rank">${rank}</span>` : ''}
+            <span class="material-icons book-cover-icon">${typeIcon(b.type)}</span>
+            <span class="book-type">${esc(badge)}</span><span class="cover-code">${esc(b.id)}</span></div>
+        <div class="book-content">
+            <span class="book-dept" style="background:${di.bg};color:${di.color}"><i class="${di.icon}"></i>${di.name}</span>
+            <h3 class="book-title">${esc(b.title)}</h3>
+            <p class="book-author"><i class="fa-solid fa-user-pen me-1"></i>${esc(b.author)}</p>
+            <div class="book-meta">
+                <div class="book-meta-item"><div class="book-meta-label">Semester</div><div class="book-meta-value">Sem ${b.semester}</div></div>
+                <div class="book-meta-item"><div class="book-meta-label">Year</div><div class="book-meta-value">${b.year}</div></div>
+                <div class="book-meta-item"><div class="book-meta-label">Subject</div><div class="book-meta-value">${esc(b.subject)}</div></div>
+                <div class="book-meta-item"><div class="book-meta-label">Rating</div><div class="book-meta-value">⭐ ${b.rating.toFixed(1)}</div></div>
+            </div>
+            <div class="book-footer">
+                <div class="availability ${av ? 'available' : 'unavailable'}"><span class="availability-dot"></span>${av ? b.available + ' Available' : 'Out of Stock'}</div>
+                <a class="details-btn" href="books.html?book=${encodeURIComponent(b.id)}">View Details <i class="fa-solid fa-arrow-right ms-1"></i></a>
+            </div>
+        </div></article></div>`;
+                };
+
+                const issuedCount = (b) => b.quantity - b.available;
+                const addedTime = (b) => b.addedAt ? new Date(b.addedAt).getTime() : 0;
+                const normalized = books.map(norm);
+
+                const popular = [...normalized].sort((a, b) => issuedCount(b) - issuedCount(a)).slice(0, 8);
+                const recent = [...normalized].sort((a, b) => addedTime(b) - addedTime(a) || String(b.id).localeCompare(String(a.id))).slice(0, 8);
+
+                document.getElementById("popular-books-container").innerHTML =
+                    popular.map((b, i) => bookCard(b, issuedCount(b) + ' Issued', i + 1)).join('');
+                document.getElementById("recent-books-container").innerHTML =
+                    recent.map(b => bookCard(b, 'New', 0)).join('');
             } catch (e) {
                 console.error("Error loading home details:", e);
             }
 
-            // Bind Search actions
+            // Hero search
             const triggerSearch = () => {
                 const query = document.getElementById("hero-search-input").value.trim();
                 window.location.href = `books.html?query=${encodeURIComponent(query)}`;
             };
-            
+
             document.getElementById("hero-search-btn").addEventListener("click", triggerSearch);
             document.getElementById("hero-search-input").addEventListener("keypress", (e) => {
                 if (e.key === "Enter") triggerSearch();
             });
         });
     </script>
+
+    <!-- QR section: entrance animation replays every time it scrolls into view -->
+    <script>
+        (function () {
+            var section = document.getElementById("qr-code");
+            if (!section || !("IntersectionObserver" in window)) return;
+
+            document.documentElement.classList.add("qr-anim");
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.intersectionRatio >= 0.2) {
+                        section.classList.add("qr-in-view");
+                    } else if (entry.intersectionRatio === 0) {
+                        section.classList.remove("qr-in-view");
+                    }
+                });
+            }, { threshold: [0, 0.2] });
+
+            observer.observe(section);
+        })();
+    </script>
+
+    <!-- QR section: Download / Share / Print buttons -->
+    <script src="js/qr-actions.js"></script>
+
     <script src="js/chatbot.js"></script>
+
+    <div style="text-align:center;margin:20px;">
+        <a href="student_card.php">🎓 View Student Library ID Card</a>
+    </div>
 </body>
 </html>

@@ -5,6 +5,13 @@
 
 import { FIREBASE_CONFIG, APP_MODE } from "./config.js";
 
+// Dynamic API Endpoint Switcher (Local XAMPP vs Render Backend)
+const LIVE_BACKEND_URL = "https://department-library-chatbot-otp-docker.onrender.com/";
+
+const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+    ? "backend/api/"
+    : LIVE_BACKEND_URL;
+
 let auth = null;
 
 if (APP_MODE === "firebase") {
@@ -211,7 +218,6 @@ export function enforceProtectedRoute(requiredRole = null) {
  */
 export async function updatePasswordWithOTP(email, newPassword) {
     if (APP_MODE === "firebase" && auth) {
-        // Firebase handles resets via emailed reset link; for demo/local storage:
         throw new Error("Password reset via OTP is supported in Demo mode.");
     } else {
         const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
@@ -225,4 +231,5 @@ export async function updatePasswordWithOTP(email, newPassword) {
         localStorage.setItem(USERS_KEY, JSON.stringify(users));
         return true;
     }
-}
+                        }
+                        
